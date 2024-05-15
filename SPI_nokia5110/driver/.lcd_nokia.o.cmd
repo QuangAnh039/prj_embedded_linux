@@ -1,0 +1,1 @@
+cmd_/home/quanganh/SPI_nokia5110/driver/lcd_nokia.o := /home/quanganh/kernelbuildscripts/dl/gcc-8.5.0-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-ld  -EL    -r -o /home/quanganh/SPI_nokia5110/driver/lcd_nokia.o /home/quanganh/SPI_nokia5110/driver/lcd.o /home/quanganh/SPI_nokia5110/driver/driver_nokia5110.o
