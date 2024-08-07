@@ -6,6 +6,7 @@
 
 #define MAX_CONNECTIONS 10
 #define BUFFER_SIZE 1024
+#include <stdbool.h>
 
 typedef struct 
 {
@@ -18,6 +19,8 @@ extern pthread_mutex_t lock;
 extern int listening_port;
 extern int connection_count;
 extern int yes;
+extern pthread_t input_thread;
+extern bool oke;
 
 extern void *handle_connection(void *ptr);
 extern void *input_handler(void *ptr);
