@@ -7,7 +7,19 @@
 #include <sys/types.h>
 #include <ifaddrs.h>
 #include "/home/quanganh/chat_application/include/my_feature.h"
-
+/**
+ * @brief Connects to a peer at the specified IP address and port.
+ *
+ * This function attempts to create a socket connection to a peer using the provided
+ * IP address and port number. If successful, the connection is added to the list
+ * of active connections and a separate thread is created to handle communication
+ * with the peer.
+ *
+ * @param ip The IP address of the peer to connect to.
+ * @param port The port number of the peer to connect to.
+ *
+ * @return void
+ */
 void connect_to_peers(const char *ip, int ports)
 {
     int sock;
@@ -61,7 +73,11 @@ void connect_to_peers(const char *ip, int ports)
 
     pthread_mutex_unlock(&lock);
 }
-
+/**
+ * @brief Show ip of machine
+ *
+ * @return void
+ */
 void show_myip() 
 {
     struct ifaddrs *ifaddr, *ifa;
@@ -95,12 +111,20 @@ void show_myip()
     }
     freeifaddrs(ifaddr);
 }
-
+/**
+ * @brief Show port listening of machine
+ *
+ * @return void
+ */
 void show_myport() 
 {
     printf("Listening on port: %d\n", listening_port);
 }
-
+/**
+ * @brief List peers are connecting
+ *
+ * @return void
+ */
 void list_connections()
 {
     printf("\n*****************************************\n");
@@ -113,7 +137,12 @@ void list_connections()
     pthread_mutex_unlock(&lock);
     printf("*****************************************\n");
 }
-
+/**
+ * @brief Terminate a peer follow id 
+ *   
+ * @param id The id of the peer is tached by queue.
+ * @return void
+ */
 void terminate_connection(int id)
 {
     if(id < 0 || id >= connection_count)
@@ -131,7 +160,20 @@ void terminate_connection(int id)
     pthread_mutex_unlock(&lock);
     printf("Connection terminated. \n");
 }
-
+/**
+ * @brief Sends a message to a peer identified by the connection ID.
+ *
+ * This function attempts to send a message to the peer associated with the
+ * specified connection ID. If the message is sent successfully, a confirmation 
+ * message is printed. If an error occurs during sending, an error message is
+ * printed using perror.
+ *
+ * @param id The ID of the connection to which the message will be sent.
+ *           This ID corresponds to the index in the global connections array.
+ * @param message The message to be sent to the peer.
+ *
+ * @return void
+ */
 void send_message(int id, const char *message) 
 {
     if (id < 0 || id >= connection_count) 
@@ -139,11 +181,32 @@ void send_message(int id, const char *message)
         printf("Invalid connection ID.\n");
         return;
     }
-
-    send(connections[id].sock, message, strlen(message), 0);
-    printf("Message sent to connection %d.\n", id);
+    ssize_t bytes_sent = send(connections[id].sock, message, strlen(message), 0);
+    if (bytes_sent == -1)
+    {
+        perror("Failed to send message");
+    }
+    else
+    {
+        printf("Message sent to connection %d.\n", id);
+    }
 }
-
+/**
+ * @brief Handles communication with a connected peer.
+ *
+ * This function continuously reads data from a connected peer through the socket
+ * associated with the given connection structure. It prints the received data
+ * to the standard output along with the peer's IP address and port number.
+ * The function terminates when the connection is closed by the peer. After
+ * termination, the connection socket is closed, and the global connection count
+ * is decremented. The function then exits the thread.
+ *
+ * @param ptr A pointer to a `connection_t` structure containing information about
+ *            the connection, including the socket file descriptor and peer's
+ *            address.
+ *
+ * @return void
+ */
 void *handle_connection(void *ptr) 
 {
     connection_t *conn = (connection_t *)ptr;
@@ -164,6 +227,22 @@ void *handle_connection(void *ptr)
     pthread_exit(0);
 }
 
+/**
+ * @brief Handles user input and processes commands.
+ *
+ * This function runs in a loop, continuously reading commands from the standard input
+ * and processing them based on their content. The commands allow users to interact with
+ * the chat application by displaying IP address and port, connecting to peers, listing
+ * active connections, terminating connections, sending messages, or exiting the application.
+ * The loop continues until the "exit" command is received. When the function detects the
+ * "exit" command, it closes all active connections and then terminates the thread.
+ *
+ * @param ptr A pointer that is not used in this function. It is included for compatibility
+ *            with the thread interface.
+ *
+ * @return void* This function does not return a value. It uses `pthread_exit(NULL)`
+ *                to end the thread when the "exit" command is issued.
+ */
 void *input_handler(void *ptr) 
 {
     char command[BUFFER_SIZE];
