@@ -1,0 +1,31 @@
+&am33xx_pinmux {
+    display_pins: display_pins {
+        pinctrl-single,pins = <
+            AM33XX_PADCONF(0x990, PIN_INPUT, MUX_MODE3)           /* spi1_sclk	    P9_31 */
+            AM33XX_PADCONF(0x994, PIN_INPUT, MUX_MODE3)           /* spi1_d0 (miso)	P9_29 */
+            AM33XX_PADCONF(0x998, PIN_INPUT, MUX_MODE3)           /* spi1_d1 (mosi)	P9_30 */
+            AM33XX_PADCONF(0x99c, PIN_OUTPUT_PULLUP, MUX_MODE3)   /* spi1_cs0	    P9_28 */
+			AM33XX_PADCONF(0x964, PIN_OUTPUT_PULLUP, MUX_MODE2)   /* spi1_cs1		P9_42A */
+
+            AM33XX_PADCONF(0x878, PIN_OUTPUT_PULLUP, MUX_MODE7)   /* gpio1[28] rs	P9_12 */
+            AM33XX_PADCONF(0x874, PIN_OUTPUT_PULLUP, MUX_MODE7)   /* gpio0[31] dc	P9_13 */
+        >;
+    };
+};
+
+&spi1 {
+    status = "okay";
+    #address-cells = <1>;
+    #size-cells = <0>;
+
+    nokia5110: nokia5110@1 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&display_pins>;
+        
+		compatible = "nokia5110-LCD";
+		reg = <1>;
+		spi-max-frequency = <10000000>;
+		lcd-rs = <&gpio3 21 1>; /* P9_25*/
+		lcd-dc = <&gpio3 19 1>; /* P9_27*/
+	};
+};
