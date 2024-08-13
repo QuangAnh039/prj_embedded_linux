@@ -8,7 +8,16 @@ SenSorNode::~SenSorNode()
 {
     close(com.sockfd);
 }
-
+/**
+ * @brief Create IPC Socket
+ *
+ * This function attempts to create a socket with config is TCP protocol
+ * Communicate with server in LAN
+ *
+ * @param &node reference to sensornode object
+ *
+ * @return true if success create, false if create failed
+ */
 bool Create_Socket(SenSorNode &node)
 {
     memset(&node.com.server_addr, 0, sizeof(node.com.server_addr));
@@ -20,6 +29,16 @@ bool Create_Socket(SenSorNode &node)
     return true;
 }
 
+/**
+ * @brief Request connect to server
+ *
+ * This function attempts connect to server with addr server is addr local
+ * Use port take from argv
+ *
+ * @param &node reference to sensornode object
+ *
+ * @return true if successly connect, false if connect failed
+ */
 bool Request_Connect(SenSorNode &node)
 {
     node.com.server_addr.sin_family = AF_INET;
@@ -33,6 +52,16 @@ bool Request_Connect(SenSorNode &node)
 
     return true;
 }
+
+/**
+ * @brief Send temperature to server
+ *
+ * This function attempts send message to server, message include ID of sensor, Temp currently  
+ *
+ * @param &node reference to sensornode object
+ *
+ * @return true if successly send, false if send failed
+ */
 bool Send_Data(SenSorNode &node)
 {
     sprintf(node.com.send_buffer, "SensorID: %d - Temp: %.2f", node.SenSorID, node.Temp);
@@ -45,6 +74,15 @@ bool Send_Data(SenSorNode &node)
         return true;
     }
 }
+/**
+ * @brief Measuring temperature
+ *
+ * This function update temperature currently  
+ *
+ * @param void
+ *
+ * @return void
+ */
 void SenSorNode::Measure_Temp()
 {
     Temp = MIN_TEMP + (rand() / (double) RAND_MAX) * (MAX_TEMP - MIN_TEMP);
