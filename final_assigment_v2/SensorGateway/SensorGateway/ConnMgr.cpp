@@ -44,7 +44,7 @@ bool ConnMgr::create_sock()
 void ConnMgr::capture_pack(list<string>& data, mutex& mtx)
 {
     connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-    for(int i = 0; i < 10; i++)
+    while(1)
     {
         if (connfd < 0) 
         {
@@ -52,9 +52,19 @@ void ConnMgr::capture_pack(list<string>& data, mutex& mtx)
             continue;
         }
         ssize_t bytes_read = recv(connfd, Buff, sizeof(Buff) - 1, 0);
+        
+        int node_id = getID();
+        //***********************************************************
+        if(haha == 1)
+        {  
+            wr_log_into_FIFO("OPEN", node_id);
+            haha = 0;
+        }
+        //***********************************************************
         if (bytes_read == 0) 
         {
             cout << "Client disconnected" << endl;
+            wr_log_into_FIFO("CLOSE", node_id);
             close(connfd);
             break;
         }
@@ -96,4 +106,36 @@ void ConnMgr::show_shared(list<string>& data, mutex& mtx)
         }
         mtx.unlock();
     } 
+}
+
+void ConnMgr::wr_log_into_FIFO(string which, int sensor_id)
+{
+    timestamp = get_current_time();
+    if (flock(*fd, LOCK_EX) == -1) 
+    {
+        std::cerr << "Error locking FIFO\n";
+        return;
+    }
+    else
+    {
+        if(which == "OPEN")
+        {
+            string result = '<' + to_string(sequence) + '>' + '<' + timestamp + '>' + "A sensor node with <sensorNodeID: " + to_string(sensor_id) + "> has opened a new connection\n";
+            cout << "A sensor node with <sensorNodeID: " << sensor_id << "> has opened a new connection " << endl;
+            if (write(*fd, result.c_str(), result.size()) == -1) {
+                cerr << "Error writing to FIFO\n";
+            }
+            
+        }
+        if(which == "CLOSE")
+        {
+            string result = '<' + to_string(sequence) + '>' + '<' + timestamp + '>' + "The sensor node with <sensorNodeID " + to_string(sensor_id) + "> has closed the connection\n";
+            cout << "The sensor node with <sensorNodeID " << sensor_id << "> has closed the connection" << endl;
+            if (write(*fd, result.c_str(), result.size()) == -1) {
+                cerr << "Error writing to FIFO\n";
+            }
+        }
+        sequence++;
+    }
+    flock(*fd, LOCK_UN);
 }

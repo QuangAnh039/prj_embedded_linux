@@ -1,4 +1,3 @@
-#include <bits/stdc++.h>
 #include "MainProcess.h"
 #include <thread>
 #include <iostream>
@@ -18,35 +17,19 @@
 using namespace std;
 // FLAG
 int flag = 0;
-// FIFO file path
-#define FIFO_FILE   "./myfifo"
+int sequence = 0;
+
 mutex fdMutex;
 condition_variable cv;
 
 // share resource
 list<string> DataCommon;
 
-void conn_manager(int threadID) 
+void conn_manager(int threadID, int *fds) 
 {
-    //fdMutex.lock();
-    // memset(buff, 0, 20);
-    // snprintf(buff, 20, "quanganh %d", threadID);
-    // //sleep(1);
-    // std::cout << "Hello from thread" << threadID << std::endl;
-
-    // int fd = open(FIFO_FILE, O_WRONLY);
-    // if (fd == -1) {
-    //     perror("Error opening FIFO");
-    //     return;
-    // }
-
-    // if (write(fd, buff, strlen(buff) + 1) == -1) {
-    //     perror("Error writing to FIFO");
-    // }
-    // close(fd);
-    //fdMutex.unlock();
     int ret;
     ConnMgr th1(threadID);
+    th1.fd = fds;
     if((ret = th1.create_sock()) == false)
     {
         return;
@@ -55,17 +38,26 @@ void conn_manager(int threadID)
     
 }
 
-void data_manager(int threadID)
+void data_manager(int threadID, int *fds)
 {
     DataMgr th3(threadID);
+    th3.fd = fds;
     th3.fetch_data(DataCommon, fdMutex, cv);
 
 }
 
-void storage_manager(int threadID)
+void storage_manager(int threadID, int *fds)
 {
     StorageMgr th2(threadID);
+    int ret = 0;
+    th2.fd = fds;
+    if((ret = th2.create_obj()) == false)
+    {
+        return;
+    }
+    th2.wr_log_into_FIFO("CONNECT");
     th2.rd_from_shared(DataCommon, fdMutex, cv);
+
 }
 
 int main()
@@ -75,16 +67,24 @@ int main()
     cout << p1.getPID() << endl;
 
     mkfifo(FIFO_FILE, 0666);
+    int fd = open(FIFO_FILE, O_WRONLY);
+    if (fd == -1) 
+    {
+        cerr << "Error opening FIFO\n";
+        return 1;
+    }
 
-    thread t1(conn_manager, 1);
-    thread t2(storage_manager, 2);
-    thread t3(data_manager, 3);
+    thread t1(conn_manager, 1, &fd);
+    thread t2(storage_manager, 2, &fd);
+    thread t3(data_manager, 3, &fd);
 
     t1.join();
     t2.join();
     t3.join();
 
+    close(fd);
     wait(NULL);
-    cout << "Im just wait childProcess" << endl;
+
+    cout << "SensorGateway close\n";
     return 0;   
 }

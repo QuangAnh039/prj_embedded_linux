@@ -1,0 +1,5 @@
+<0><2024-08-17 23:55:46>Connection to SQL server established
+<1><2024-08-17 23:55:49>A sensor node with <sensorNodeID: 1> has opened a new connection
+<2><2024-08-17 23:55:58>The sensor node with <sensorNodeID: 1> reports it's normal (running avg temperature = 24.710001)
+<3><2024-08-17 23:56:08>The sensor node with <sensorNodeID: 1> reports it's too cold (running avg temperature = 21.840000)
+<4><2024-08-17 23:56:11>The sensor node with <sensorNodeID 1> has closed the connection
