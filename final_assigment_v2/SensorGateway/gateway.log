@@ -1,0 +1,16 @@
+<0><2024-08-19 16:27:47>Connection to SQL server established
+<1><2024-08-19 16:27:55>A sensor node with <sensorNodeID: 3> has opened a new connection
+<2><2024-08-19 16:28:02>A sensor node with <sensorNodeID: 2> has opened a new connection
+<3><2024-08-19 16:28:04>The sensor node with <sensorNodeID: 3> reports it's normal (running avg temperature = 23.028002)
+<4><2024-08-19 16:28:07>A sensor node with <sensorNodeID: 1> has opened a new connection
+<5><2024-08-19 16:28:13>The sensor node with <sensorNodeID: 2> reports it's too cold (running avg temperature = 21.297998)
+<6><2024-08-19 16:28:17>The sensor node with <sensorNodeID: 3> reports it's normal (running avg temperature = 22.841999)
+<7><2024-08-19 16:28:21>The sensor node with <sensorNodeID: 1> reports it's normal (running avg temperature = 22.099998)
+<8><2024-08-19 16:28:22>The sensor node with <sensorNodeID 3> has closed the connection
+<9><2024-08-19 16:28:23>The sensor node with <sensorNodeID 2> has closed the connection
+<10><2024-08-19 16:28:24>The sensor node with <sensorNodeID 1> has closed the connection
+<11><2024-08-19 16:28:28>The sensor node with <sensorNodeID: 2> reports it's normal (running avg temperature = 22.056000)
+<0><2024-08-19 17:15:35>Connection to SQL server established
+<0><2024-08-19 17:17:30>Connection to SQL server established
+<1><2024-08-19 17:17:33>A sensor node with <sensorNodeID: 2> has opened a new connection
+<2><2024-08-19 17:17:36>A sensor node with <sensorNodeID: 1> has opened a new connection
