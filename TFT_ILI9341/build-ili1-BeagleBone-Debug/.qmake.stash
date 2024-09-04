@@ -1,0 +1,28 @@
+QMAKE_CXX.QT_COMPILER_STDCXX = 201402L
+QMAKE_CXX.QMAKE_GCC_MAJOR_VERSION = 6
+QMAKE_CXX.QMAKE_GCC_MINOR_VERSION = 3
+QMAKE_CXX.QMAKE_GCC_PATCH_VERSION = 1
+QMAKE_CXX.COMPILER_MACROS = \
+    QT_COMPILER_STDCXX \
+    QMAKE_GCC_MAJOR_VERSION \
+    QMAKE_GCC_MINOR_VERSION \
+    QMAKE_GCC_PATCH_VERSION
+QMAKE_CXX.INCDIRS = \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/arm-linux-gnueabihf/include/c++/6.3.1 \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/arm-linux-gnueabihf/include/c++/6.3.1/arm-linux-gnueabihf \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/arm-linux-gnueabihf/include/c++/6.3.1/backward \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/lib/gcc/arm-linux-gnueabihf/6.3.1/include \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/lib/gcc/arm-linux-gnueabihf/6.3.1/include-fixed \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/arm-linux-gnueabihf/include \
+    /home/quanganh/BBB/sysroot/usr/local/include \
+    /home/quanganh/BBB/sysroot/usr/include/arm-linux-gnueabihf \
+    /home/quanganh/BBB/sysroot/usr/include
+QMAKE_CXX.LIBDIRS = \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/lib/gcc/arm-linux-gnueabihf/6.3.1 \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/lib/gcc/arm-linux-gnueabihf \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/lib/gcc \
+    /home/quanganh/BBB/gcc-linaro-6.3.1-2017/arm-linux-gnueabihf/lib \
+    /home/quanganh/BBB/sysroot/lib/arm-linux-gnueabihf \
+    /home/quanganh/BBB/sysroot/lib \
+    /home/quanganh/BBB/sysroot/usr/lib/arm-linux-gnueabihf \
+    /home/quanganh/BBB/sysroot/usr/lib
